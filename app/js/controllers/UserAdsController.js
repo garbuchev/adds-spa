@@ -1,7 +1,7 @@
 'use strict';
 
 app.controller('UserAdsController',
-    function ($scope, authService, userService, notifyService, pageSize) {
+    function ($scope, $rootScope, $location, authService, userService, notifyService, pageSize) {
         $scope.adsParams = {
             'startPage': 1,
             'pageSize': pageSize
@@ -19,5 +19,23 @@ app.controller('UserAdsController',
             );
         };
         $scope.loadUserAds();
-    }
-);
+
+        //deactivate ad
+
+        $scope.deactivateAdId = function (deactivatedAdId) {
+            $rootScope.$broadcast("deactivateAdClicked", deactivatedAdId);
+        };
+
+        $scope.$on("deactivateAdClicked", function (event, deactivatedAdId) {
+            userService.deactivateAd(deactivatedAdId,
+                function success() {
+                    notifyService.showInfo("Advertisement deactivated successfully!");
+                },
+                function error(err) {
+                    notifyService.showInfo(err.error_description);
+                });
+        });
+        $scope.loadUserAds();
+
+    });
+
