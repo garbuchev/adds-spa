@@ -21,7 +21,6 @@ app.controller('UserAdsController',
         $scope.loadUserAds();
 
         //deactivate ad
-
         $scope.deactivateAdId = function (deactivatedAdId) {
             $rootScope.$broadcast("deactivateAdClicked", deactivatedAdId);
         };
@@ -35,7 +34,10 @@ app.controller('UserAdsController',
                     notifyService.showInfo(err.error_description);
                 });
         });
-        $scope.loadUserAds();
+
+        $rootScope.showMyMenu = function () {
+            return $location.path() == "/user/ads";
+        }
 
     });
 
